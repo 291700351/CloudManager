@@ -1,0 +1,6 @@
+dependencies {
+    /* MyBatis page helper supper */
+    compile 'com.github.pagehelper:pagehelper-spring-boot-starter:1.2.5'
+    /* 加密 */
+    compile "org.apache.shiro:shiro-core:1.4.0"
+}

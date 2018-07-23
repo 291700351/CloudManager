@@ -1,0 +1,96 @@
+buildscript {
+    ext {
+        kotlinVersion = KOTLIN_VERSION
+        springBootVersion = SPRING_BOOT_VERSION
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+    }
+}
+
+subprojects {
+    buildscript {
+        ext {
+            kotlinVersion = KOTLIN_VERSION
+            springBootVersion = SPRING_BOOT_VERSION
+        }
+        repositories {
+            jcenter()
+            mavenCentral()
+        }
+        dependencies {
+            classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+            classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        }
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.github.lee'
+    version = '1.0.0'
+    sourceCompatibility = 1.8
+
+    sourceSets {
+        main.java.srcDirs("src/main/java", "src/main/kotlin")
+        main.resources.srcDir("src/main/resources")
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+
+    ext {
+        springCloudVersion = SPRING_CLOUD_VERSION
+    }
+
+    dependencies {
+        /* Test supper */
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        /* Kotlin supper */
+        compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        compile("org.jetbrains.kotlin:kotlin-reflect")
+        /* SpringBoot DevTool supper */
+        runtime('org.springframework.boot:spring-boot-devtools')
+
+        /* SpringBoot Web supper */
+        compile('org.springframework.boot:spring-boot-starter-web')
+        compile('com.fasterxml.jackson.module:jackson-module-kotlin')
+        /* Fast Json supper */
+        compile 'com.alibaba:fastjson:1.2.47'
+        /* Euerka Supper */
+        compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+}

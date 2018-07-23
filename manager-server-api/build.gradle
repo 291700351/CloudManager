@@ -1,0 +1,5 @@
+dependencies {
+    compile project(":manager-commons")
+    compile project(":manager-pojo")
+    compile project(":manager-dao")
+}

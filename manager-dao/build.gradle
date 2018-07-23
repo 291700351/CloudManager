@@ -1,0 +1,14 @@
+dependencies {
+    //Local projects
+    compile project(":manager-pojo")
+    //Remote
+    /* Mybatis supper */
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
+    /* Mysql supper */
+    runtime('mysql:mysql-connector-java')
+    //Druid数据库连接池
+    compile 'com.alibaba:druid-spring-boot-starter:1.1.9'
+    //逆向工程
+    compile 'org.mybatis.generator:mybatis-generator-core:1.3.5'
+
+}

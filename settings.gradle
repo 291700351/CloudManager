@@ -1,0 +1,15 @@
+rootProject.name = 'cloud-manager'
+
+/* Local projects */
+include ':manager-commons' //core utils.....
+include ':manager-dao'  //Mybatis dao
+include ':manager-server-api'
+
+
+/* Zuul */
+include ":manager-zuul"
+/* SpringCloud */
+include ":eureka-register-center"
+include ':manager-pojo'
+include ':manager-server-api-admin'
+
