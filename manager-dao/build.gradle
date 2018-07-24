@@ -1,3 +1,14 @@
+gradle.taskGraph.whenReady {
+    tasks.each { task ->
+        task.enabled = true
+        if ("bootJar" == task.name) {
+            task.enabled = false
+        }else if ("bootRun" == task.name) {
+            task.enabled = false
+        }
+    }
+}
+
 dependencies {
     //Local projects
     compile project(":manager-pojo")
@@ -12,3 +23,4 @@ dependencies {
     compile 'org.mybatis.generator:mybatis-generator-core:1.3.5'
 
 }
+

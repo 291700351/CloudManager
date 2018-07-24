@@ -1,3 +1,13 @@
+gradle.taskGraph.whenReady {
+    tasks.each { task ->
+        task.enabled = true
+        if ("bootJar" == task.name) {
+            task.enabled = false
+        }else if ("bootRun" == task.name) {
+            task.enabled = false
+        }
+    }
+}
 dependencies {
     /* MyBatis page helper supper */
     compile 'com.github.pagehelper:pagehelper-spring-boot-starter:1.2.5'

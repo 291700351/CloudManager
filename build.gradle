@@ -30,7 +30,6 @@ subprojects {
             classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
         }
     }
-
     apply plugin: 'java'
     apply plugin: 'kotlin'
     apply plugin: 'kotlin-spring'
@@ -39,8 +38,8 @@ subprojects {
 
     group = 'com.github.lee'
     version = '1.0.0'
-    sourceCompatibility = 1.8
 
+    sourceCompatibility = 1.8
     sourceSets {
         main.java.srcDirs("src/main/java", "src/main/kotlin")
         main.resources.srcDir("src/main/resources")
@@ -69,6 +68,19 @@ subprojects {
         springCloudVersion = SPRING_CLOUD_VERSION
     }
 
+    // SpringCloud的bootJar和bootRun和java的jar任务冲突，
+    // jar包依赖项目不会被打包成jar存在，使用这个保证会打包jar
+    gradle.taskGraph.whenReady {
+        tasks.each { task ->
+            task.enabled = true
+//            if ("bootJar" == task.name) {
+//                task.enabled = false
+//            }else if ("bootRun" == task.name) {
+//                task.enabled = false
+//            }
+        }
+    }
+
     dependencies {
         /* Test supper */
         testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -93,4 +105,38 @@ subprojects {
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
     }
+
+
+    task copyDocker(dependsOn: [clean, bootJar]) {
+        def dockerfile = file('src/main/docker/Dockerfile')
+        def stageDir = file(".." + File.separator + "docker" + File.separator + getProject().getName())
+        doFirst {
+            copy {
+                from jar
+                into stageDir
+                rename {
+                    "app.jar"
+                }
+            }
+            copy {
+                from dockerfile
+                into stageDir
+            }
+        }
+    }
+
 }
+
+//
+//task runDocker(type: Delete) {
+//    def dockerPath = new File("./docker")
+//    if (dockerPath.exists() && dockerPath.isDirectory()) {
+//        def dockerServerPaths = dockerPath.listFiles()
+//        for (File dockerServerPath : dockerServerPaths) {
+//            if (!dockerServerPath.isDirectory()) {
+//                continue
+//            }
+//            println dockerServerPath.getName()
+//        }
+//    }
+//}
