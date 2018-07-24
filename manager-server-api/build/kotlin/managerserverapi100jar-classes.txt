@@ -1,1 +1,0 @@
-D:\projects\IdeaProjects\CloudManager\manager-server-api\build\classes\kotlin\main\com\github\lee\server\api\AdminServerAPI$Companion.class;D:\projects\IdeaProjects\CloudManager\manager-server-api\build\classes\kotlin\main\com\github\lee\server\api\AdminServerAPI.class
