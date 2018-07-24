@@ -26,5 +26,6 @@
 
 ### Add by self ###
 /logs
+/log
 /docker
 /sql/mysql
