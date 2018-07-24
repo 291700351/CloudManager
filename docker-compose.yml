@@ -1,24 +1,53 @@
 version: "3"
 
 services:
+  ### Eureka注册中心 ###
   eureka-register-center:
     build: ./docker/eureka-register-center
     ports: 
-    - "7000:7000"
+      - "7000:7000"
+    volumes:
+      - ./log/eureka-register-center:/logs/eureka-register-center
 
+  ### 网关服务 ###
   manager-zuul:
     build: ./docker/manager-zuul
     ports:
-    - "80:80"
+      - "80:80"
     links:
-       - eureka-register-center
+      - eureka-register-center
     depends_on:
       - eureka-register-center
+    volumes:
+      - ./log/manager-zuul:/logs/manager-zuul
+  ### Mysql服务 ###
+  mysql-server:
+    build: ./sql
+    restart: always
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;' --innodb-flush-log-at-trx-commit=0
+    expose:
+      - "3306"
+    ports:
+    - "3306:3306"
+    volumes:
+    - ./sql/mysql/conf:/etc/mysql/conf.d
+    - ./sql/mysql/logs:/logs
+    - ./sql/mysql/data:/var/lib/mysql
+    environment:
+    - MYSQL_DATABASE=manager
+    - MYSQL_ROOT_PASSWORD=524299
+
+
+  ### Server-Admin服务 ###
   manager-server-api-admin:
     build: ./docker/manager-server-api-admin
     ports:
       - "11000:11000"
     links:
-       - eureka-register-center
+      - eureka-register-center
+      - mysql-server
     depends_on:
       - eureka-register-center
+      - mysql-server
+    volumes:
+      - ./log/manager-server-api-admin:/logs/manager-server-api-admin
