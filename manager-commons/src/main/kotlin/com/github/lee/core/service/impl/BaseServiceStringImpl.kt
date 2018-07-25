@@ -3,7 +3,6 @@ package com.github.lee.core.service.impl
 import com.github.lee.core.service.BaseService
 import org.apache.shiro.crypto.hash.Md5Hash
 import org.apache.shiro.util.ByteSource
-import org.slf4j.LoggerFactory
 import java.util.*
 
 
@@ -34,11 +33,11 @@ fun getStringSum(str: String, max: Int = 0): Int {
  * 业务层String主键的基础实现
  *
  */
-abstract class BaseServiceStringImpl<TYPE, EXAMPLE, MAPPER> : BaseService<String, TYPE, EXAMPLE, MAPPER> {
-    protected val logger = LoggerFactory.getLogger(this.javaClass)
+interface BaseServiceStringImpl<TYPE, EXAMPLE, MAPPER> : BaseService<String, TYPE, EXAMPLE, MAPPER> {
+    //    protected val logger = LoggerFactory.getLogger(this.javaClass)
     /**生成密码*/
-    protected fun generatePassword(username: String, password: String,
-                                   salt: ByteSource? = null): String {
+    fun generatePassword(username: String, password: String,
+                         salt: ByteSource? = null): String {
         val u = Md5Hash(username, salt ?: "", getStringSum(username))
                 .toHex()
                 .toUpperCase(Locale.CHINESE)

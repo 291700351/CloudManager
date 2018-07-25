@@ -12,4 +12,5 @@ include ":manager-zuul"
 /* SpringCloud */
 include ":eureka-register-center"
 include ':manager-server-api-admin'
+include ':manager-test'
 
