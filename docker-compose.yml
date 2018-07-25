@@ -9,17 +9,6 @@ services:
     volumes:
       - ./log/eureka-register-center:/logs/eureka-register-center
 
-  ### 网关服务 ###
-  manager-zuul:
-    build: ./docker/manager-zuul
-    ports:
-      - "80:80"
-    links:
-      - eureka-register-center
-    depends_on:
-      - eureka-register-center
-    volumes:
-      - ./log/manager-zuul:/logs/manager-zuul
   ### Mysql服务 ###
   mysql-server:
     build: ./sql
@@ -37,7 +26,6 @@ services:
     - MYSQL_DATABASE=manager
     - MYSQL_ROOT_PASSWORD=524299
 
-
   ### Server-Admin服务 ###
   manager-server-api-admin:
     build: ./docker/manager-server-api-admin
@@ -51,3 +39,16 @@ services:
       - mysql-server
     volumes:
       - ./log/manager-server-api-admin:/logs/manager-server-api-admin
+
+### 网关服务 ###
+  manager-zuul:
+    build: ./docker/manager-zuul
+    ports:
+      - "80:80"
+    links:
+      - eureka-register-center
+    depends_on:
+      - eureka-register-center #依赖注册中心
+      - manager-server-api-admin # 优先启动后台服务
+    volumes:
+      - ./log/manager-zuul:/logs/manager-zuul
