@@ -51,6 +51,7 @@ services:
       - manager-server-api-admin
       - eureka-register-center
       - mysql-server
+      - manager-zuul
     volumes:
       - ./log/manager-test:/logs/manager-test
 

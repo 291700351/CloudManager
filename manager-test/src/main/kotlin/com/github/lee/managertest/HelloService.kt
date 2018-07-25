@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 
-@FeignClient("server-admin")
+@FeignClient("manager-zuul")
 interface HelloService {
-    @RequestMapping("/test")
-    fun test(@RequestParam(defaultValue = "") id: String): JsonResponse
+    @RequestMapping("/admin/test")
+    fun test(@RequestParam id: String): JsonResponse
 
 }
